@@ -58,7 +58,10 @@ class EditStore : Fragment() {
         binding.shopName.text = shop.shopName
         deleteButton = binding.deleteButton
         deleteButton.setOnClickListener {
-
+            if (shop.equals(sharedViewModel.mainShop.value)){
+                Log.d(TAG,"현재 이용중인 상가는 삭제하실 수 없습니다")
+            }
+            else{
             // val shop = sharedViewModel.shop.value!!
             Log.d(TAG,"shop delete" + shop.toString())
             lifecycleScope.launch{
@@ -71,6 +74,7 @@ class EditStore : Fragment() {
                 }else{
                     Log.d(TAG,"delete failed ${shop.toString()}")
                 }
+            }
             }
 
         }
