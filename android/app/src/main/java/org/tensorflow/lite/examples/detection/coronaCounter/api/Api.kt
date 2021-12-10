@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.tensorflow.lite.examples.detection.coronaCounter.model.Trial
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -64,17 +65,20 @@ interface Api {
     suspend fun deleteShop(@Body shop: Shop)
             : Response<Boolean>
 
-
-
     // TODO
     // editshop api 짜줘..
     @Headers("Content-Type:application/json")
     @POST("edit-shop")
-    suspend fun editShop(@Body shopPair: Map<String,Shop>)
+    suspend fun editShop(@Body shopInfo: Map<String, Shop>)
             : Response<Boolean>
 
     // TODO
     // getStatistic api 짜줘...
+    @Headers("Content-Type:application/json")
+    @POST("statistic")
+    suspend fun getStatistic(@Body user: Shop)
+            : List<Trial>
+
 }
 
 object RetrofitInstance {

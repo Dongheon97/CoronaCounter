@@ -136,7 +136,6 @@ class AppViewModel:ViewModel(){
         }
     }
 
-
     // shop을 보내면, db에서 삭제해준 후 성공여부를 리턴
     suspend fun deleteShop(shop:Shop) : Boolean {
         return withContext(Dispatchers.IO){
