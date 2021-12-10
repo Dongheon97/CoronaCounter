@@ -6,6 +6,9 @@ import java.io.Serializable
 import java.math.BigInteger
 
 data class Shop(
+    @SerializedName("onum")
+    var onum:Integer?,
+
     @SerializedName("sid")
     var sid:String?,
 

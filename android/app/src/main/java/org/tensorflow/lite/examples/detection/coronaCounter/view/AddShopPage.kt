@@ -92,7 +92,7 @@ class AddShopPage : Fragment() {
         }
 
         addButton.setOnClickListener {
-            val shop = Shop("0", shopName.text.toString(),locationSpinner.selectedItem.toString(),maxPeople.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
+            val shop = Shop(sharedViewModel.user.value!!.onum as? Integer,"0", shopName.text.toString(),locationSpinner.selectedItem.toString(),maxPeople.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
             Log.d(TAG,"shop made:" + shop.toString())
             lifecycleScope.launch{
                 val succeed = sharedViewModel.addShop(shop)

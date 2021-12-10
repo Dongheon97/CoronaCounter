@@ -69,9 +69,7 @@ class MyPage : Fragment() {
             val action = MyPageDirections.actionMyPageToAddShopPage()
             view.findNavController().navigate(action)
             Log.d(TAG,"addShopButtonClicked")
-            // TODO
-            // 샵 추가 페이지로 이동
-            // 샵추가로직 addshop
+
         }
         recyclerView.setHasFixedSize(true)
         sharedViewModel.shops.observe(viewLifecycleOwner,

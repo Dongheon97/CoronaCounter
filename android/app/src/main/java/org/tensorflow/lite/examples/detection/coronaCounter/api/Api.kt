@@ -52,7 +52,7 @@ interface Api {
     //db에 저장하고
     //성공했는지를 boolean으로 받고 싶음
     @Headers("Content-Type:application/json")
-    @POST("idValid")
+    @POST("add-shop")
     suspend fun addShop(@Body shop: Shop)
             : Response<Boolean>
 }
