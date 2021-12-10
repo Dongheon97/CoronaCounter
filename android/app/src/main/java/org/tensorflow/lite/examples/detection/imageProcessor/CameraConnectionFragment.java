@@ -52,6 +52,11 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import org.tensorflow.lite.examples.detection.R;
+import org.tensorflow.lite.examples.detection.imageProcessor.customview.AutoFitTextureView;
+import org.tensorflow.lite.examples.detection.imageProcessor.env.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,10 +64,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-
-import org.tensorflow.lite.examples.detection.R;
-import org.tensorflow.lite.examples.detection.imageProcessor.customview.AutoFitTextureView;
-import org.tensorflow.lite.examples.detection.imageProcessor.env.Logger;
 
 @SuppressLint("ValidFragment")
 public class CameraConnectionFragment extends Fragment {

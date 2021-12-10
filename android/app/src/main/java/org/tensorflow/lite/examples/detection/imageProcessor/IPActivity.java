@@ -12,12 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.tensorflow.lite.examples.detection.R;
 
 public class IPActivity extends AppCompatActivity {
-
+    private IPGlobal ipGlobal = (IPGlobal) getApplication();
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         // 전역변수 가져옴.
-        ImageProcessor imageProcessor = (ImageProcessor) getApplication() ;
+        IPGlobal ipGlobal = (IPGlobal) getApplication() ;
 
         setContentView(R.layout.tfe_od_choose_camera);
 
@@ -26,10 +26,12 @@ public class IPActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    imageProcessor.setIsBack(true);
+                    ipGlobal.setIsBack(true);
+                    System.out.println("This is Back Camera");
                 }
                 else{
-                    imageProcessor.setIsBack(false);
+                    ipGlobal.setIsBack(false);
+                    System.out.println("This is Front Camera");
                 }
             }
         });
@@ -39,10 +41,12 @@ public class IPActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
-                    imageProcessor.setIsRight(true);
+                    ipGlobal.setIsRight(true);
+                    System.out.println("This is Right Entrance");
                 }
                 else{
-                    imageProcessor.setIsRight(false);
+                    ipGlobal.setIsRight(false);
+                    System.out.println("This is Left Entrance");
                 }
             }
         });
@@ -51,6 +55,12 @@ public class IPActivity extends AppCompatActivity {
         countButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                ipGlobal.setMaximum(10);
+                ipGlobal.setLimited(4);
+                ipGlobal.setCurrent(0);
+                System.out.println(ipGlobal.getMaximum());
+                System.out.println(ipGlobal.getLimited());
+                System.out.println(ipGlobal.getCurrent());
                 Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);
                 startActivity(intent);
             }

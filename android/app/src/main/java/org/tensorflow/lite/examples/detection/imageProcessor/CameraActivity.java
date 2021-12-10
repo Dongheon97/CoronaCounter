@@ -34,9 +34,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Size;
 import android.view.Surface;
 import android.view.View;
@@ -47,13 +44,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import java.nio.ByteBuffer;
 
 import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.ImageUtils;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.Logger;
+
+import java.nio.ByteBuffer;
 
 public abstract class CameraActivity extends AppCompatActivity
     implements OnImageAvailableListener,
@@ -82,11 +85,13 @@ public abstract class CameraActivity extends AppCompatActivity
   private LinearLayout gestureLayout;
   private BottomSheetBehavior<LinearLayout> sheetBehavior;
 
-  protected TextView frameValueTextView, cropValueTextView, inferenceTimeTextView;
+  protected TextView maxValueTextView, currentValueTextView, limitValueTextView;
   protected ImageView bottomSheetArrowImageView;
   private ImageView plusImageView, minusImageView;
   private SwitchCompat apiSwitchCompat;
   private TextView threadsTextView;
+
+  private IPGlobal ipGlobal = (IPGlobal) getApplication();
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -161,9 +166,10 @@ public abstract class CameraActivity extends AppCompatActivity
           public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
         });
 
-    frameValueTextView = findViewById(R.id.frame_info);
-    cropValueTextView = findViewById(R.id.crop_info);
-    inferenceTimeTextView = findViewById(R.id.inference_info);
+
+    maxValueTextView = findViewById(R.id.max_info);
+    currentValueTextView = findViewById(R.id.current_info);
+    limitValueTextView = findViewById(R.id.limit_info);
 
     apiSwitchCompat.setOnCheckedChangeListener(this);
 
@@ -398,7 +404,7 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   private String chooseCamera() {
-    ImageProcessor imageProcessor = (ImageProcessor) getApplication();
+    IPGlobal ipGlobal = (IPGlobal) getApplication();
     final CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
     try {
       for (final String cameraId : manager.getCameraIdList()) {
@@ -406,10 +412,11 @@ public abstract class CameraActivity extends AppCompatActivity
 
         // We don't use a front facing camera in this sample.
         final Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
-        
+
+
         // 전면(LENS_FACING_FRONT = 0), 후면(LENS_FACING_BACK = 1) 카메라 설정
         final Integer chosenCamera;
-        if(imageProcessor.getIsBack()){
+        if(ipGlobal.getIsBack()){
           chosenCamera = 0;
         }
         else{
@@ -539,15 +546,15 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   protected void showFrameInfo(String frameInfo) {
-    frameValueTextView.setText(frameInfo);
+    maxValueTextView.setText(frameInfo);
   }
 
   protected void showCropInfo(String cropInfo) {
-    cropValueTextView.setText(cropInfo);
+    currentValueTextView.setText(cropInfo);
   }
 
   protected void showInference(String inferenceTime) {
-    inferenceTimeTextView.setText(inferenceTime);
+    limitValueTextView.setText(inferenceTime);
   }
 
   protected abstract void processImage();
