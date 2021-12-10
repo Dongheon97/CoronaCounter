@@ -98,6 +98,8 @@ class AddShopPage : Fragment() {
                 val succeed = sharedViewModel.addShop(shop)
                 if (succeed){
                     sharedViewModel.fetchShops()
+                    val action = AddShopPageDirections.actionAddShopPageToMyPage()
+                    view.findNavController().navigate(action)
                     Log.d(TAG,"${shop.toString()} added")
                 }else{
                     Log.d(TAG,"add failed ${shop.toString()}")

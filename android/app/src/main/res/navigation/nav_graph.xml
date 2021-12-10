@@ -90,5 +90,11 @@
         android:id="@+id/addShopPage"
         android:name="org.tensorflow.lite.examples.detection.coronaCounter.view.AddShopPage"
         android:label="fragment_add_shop_page"
-        tools:layout="@layout/fragment_add_shop_page" />
+        tools:layout="@layout/fragment_add_shop_page" >
+        <action
+            android:id="@+id/action_addShopPage_to_myPage"
+            app:destination="@id/myPage"
+            app:popUpTo="@id/myPage"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
