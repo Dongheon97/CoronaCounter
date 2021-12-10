@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coronacounter.adapter.ShopItemAdapter
 import com.example.coronacounter.adapter.ShopPrimaryItemAdapter
+import com.example.coronacounter.view.MyPageDirections
 import com.example.coronacounter.viewModel.AppViewModel
 import org.tensorflow.lite.examples.detection.R
 import org.tensorflow.lite.examples.detection.databinding.FragmentMyPageBinding
@@ -61,6 +63,11 @@ class SelectPrimaryShop : Fragment() {
 
         sharedViewModel.shops.observe(viewLifecycleOwner,
             { shops ->
+                if(shops.isEmpty()){
+                    val action = SelectPrimaryShopDirections.actionSelectPrimaryShopToFirstAddShopPage()
+                    view.findNavController().navigate(action)
+
+                }
                 recyclerView.adapter = ShopPrimaryItemAdapter(mycontext, shops)
             })
 

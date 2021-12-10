@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_selectPrimaryShop_to_mainMenu"
             app:destination="@id/mainMenu" />
+        <action
+            android:id="@+id/action_selectPrimaryShop_to_firstAddShopPage"
+            app:destination="@id/firstAddShopPage" />
     </fragment>
     <fragment
         android:id="@+id/addShopPage"
@@ -100,6 +103,17 @@
             android:id="@+id/action_addShopPage_to_myPage"
             app:destination="@id/myPage"
             app:popUpTo="@id/myPage"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/firstAddShopPage"
+        android:name="org.tensorflow.lite.examples.detection.coronaCounter.view.FirstAddShopPage"
+        android:label="fragment_first_add_shop_page"
+        tools:layout="@layout/fragment_first_add_shop_page" >
+        <action
+            android:id="@+id/action_firstAddShopPage_to_selectPrimaryShop"
+            app:destination="@id/selectPrimaryShop"
+            app:popUpTo="@id/selectPrimaryShop"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>
