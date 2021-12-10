@@ -59,7 +59,6 @@ class SelectPrimaryShop : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView: RecyclerView = binding.userPrimaryShopList
 
-        recyclerView.setHasFixedSize(true)
         sharedViewModel.shops.observe(viewLifecycleOwner,
             { shops ->
                 recyclerView.adapter = ShopPrimaryItemAdapter(mycontext, shops)

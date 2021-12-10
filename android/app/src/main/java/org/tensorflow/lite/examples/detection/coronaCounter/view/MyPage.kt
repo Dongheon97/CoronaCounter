@@ -65,7 +65,6 @@ class MyPage : Fragment() {
             Log.d(TAG,"addShopButtonClicked")
 
         }
-        recyclerView.setHasFixedSize(true)
         sharedViewModel.shops.observe(viewLifecycleOwner,
             { shops ->
                     recyclerView.adapter = ShopItemAdapter(mycontext, shops)
