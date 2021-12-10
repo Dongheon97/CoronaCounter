@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -59,19 +60,23 @@ class EditStore : Fragment() {
         deleteButton = binding.deleteButton
         deleteButton.setOnClickListener {
             if (shop.equals(sharedViewModel.mainShop.value)){
+                Toast.makeText(getActivity(), "현재 이용중인 상가는 삭제하실 수 없습니다", Toast.LENGTH_SHORT).show();
                 Log.d(TAG,"현재 이용중인 상가는 삭제하실 수 없습니다")
             }
             else{
-            // val shop = sharedViewModel.shop.value!!
+
+                // val shop = sharedViewModel.shop.value!!
             Log.d(TAG,"shop delete" + shop.toString())
             lifecycleScope.launch{
                 val succeed = sharedViewModel.deleteShop(shop)
                 if (succeed){
+                    Toast.makeText(getActivity(), "상가 삭제 성공", Toast.LENGTH_SHORT).show();
                     sharedViewModel.fetchShops()
                     val action = EditStoreDirections.actionEditStoreToMyPage()
                     view.findNavController().navigate(action)
                     Log.d(TAG,"${shop.toString()} deleted")
                 }else{
+                    Toast.makeText(getActivity(), "상가 삭제 실패", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"delete failed ${shop.toString()}")
                 }
             }

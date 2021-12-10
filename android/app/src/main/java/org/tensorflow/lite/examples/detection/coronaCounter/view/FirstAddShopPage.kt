@@ -102,8 +102,10 @@ class FirstAddShopPage : Fragment() {
                     sharedViewModel.fetchShops()
                     val action = FirstAddShopPageDirections.actionFirstAddShopPageToSelectPrimaryShop()
                     view.findNavController().navigate(action)
+                    Toast.makeText(getActivity(), "상가 추가 완료 서비스를 이용할 수 있습니다", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"${shop.toString()} added")
                 }else{
+                    Toast.makeText(getActivity(), "상가 추가 실패", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"add failed ${shop.toString()}")
                 }
             }

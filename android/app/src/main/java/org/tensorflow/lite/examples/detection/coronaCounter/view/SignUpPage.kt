@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -89,12 +90,15 @@ class SignUpPage : Fragment() {
                     val valid = sharedViewModel.addUser(user)
                     if (valid){
                         view.findNavController().navigate(action)
+                        Toast.makeText(getActivity(), "회원가입 성공", Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"${user.id} 회원가입 성공")
                     }else{
+                        Toast.makeText(getActivity(), "회원가입 실패", Toast.LENGTH_SHORT).show();
                         Log.d(TAG,"네트워크 에러로 회원가입 실패 ${user.id}")
                     }
                 }
                 else{
+                    Toast.makeText(getActivity(), "이미 존재하는 아이디입니다", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"이미 존재하는 아이디입니다.")
                 }
             }

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -72,8 +73,10 @@ class LoginPage : Fragment() {
                     sharedViewModel.fetchShops()
                     val action = LoginPageDirections.actionLoginPageToSelectPrimaryShop()
                     view.findNavController().navigate(action)
+                    Toast.makeText(getActivity(), "로그인 성공", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"${user.id} logged in")
                 }else{
+                    Toast.makeText(getActivity(), "로그인 실패하셨습니다. 아이디 패스워드를 확인하세요.", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"log in failed ${user.id}")
                 }
             }

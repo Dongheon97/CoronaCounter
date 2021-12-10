@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -64,6 +65,7 @@ class SelectPrimaryShop : Fragment() {
         sharedViewModel.shops.observe(viewLifecycleOwner,
             { shops ->
                 if(shops.isEmpty()){
+                    Toast.makeText(getActivity(), "우선 상가를 등록해야 사용할 수 있습니다", Toast.LENGTH_SHORT).show();
                     val action = SelectPrimaryShopDirections.actionSelectPrimaryShopToFirstAddShopPage()
                     view.findNavController().navigate(action)
 

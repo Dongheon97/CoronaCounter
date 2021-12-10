@@ -97,11 +97,13 @@ class AddShopPage : Fragment() {
             lifecycleScope.launch{
                 val succeed = sharedViewModel.addShop(shop)
                 if (succeed){
+                    Toast.makeText(getActivity(), "상가 추가 성공", Toast.LENGTH_SHORT).show();
                     sharedViewModel.fetchShops()
                     val action = AddShopPageDirections.actionAddShopPageToMyPage()
                     view.findNavController().navigate(action)
                     Log.d(TAG,"${shop.toString()} added")
                 }else{
+                    Toast.makeText(getActivity(), "상가 추가 실패", Toast.LENGTH_SHORT).show();
                     Log.d(TAG,"add failed ${shop.toString()}")
                 }
             }
