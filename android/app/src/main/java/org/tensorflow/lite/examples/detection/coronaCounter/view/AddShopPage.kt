@@ -92,6 +92,10 @@ class AddShopPage : Fragment() {
         }
 
         addButton.setOnClickListener {
+            if (maxPeople.text.toString().toIntOrNull() == null){
+                Toast.makeText(getActivity(), "인원은 숫자만 가능합니다.", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
             val shop = Shop(sharedViewModel.user.value!!.onum as? Integer,"0", shopName.text.toString(),locationSpinner.selectedItem.toString(),maxPeople.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
             Log.d(TAG,"shop made:" + shop.toString())
             lifecycleScope.launch{

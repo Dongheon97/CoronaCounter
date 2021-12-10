@@ -158,6 +158,10 @@ class EditStore : Fragment() {
 
 
         editButton.setOnClickListener {
+            if (max.text.toString().toIntOrNull() == null){
+                Toast.makeText(getActivity(), "인원은 숫자만 가능합니다.", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
             val isMain = shop.equals(sharedViewModel.mainShop.value)
             val newshop = Shop(shop.onum as? Integer,shop.sid, name.text.toString(),locationSpinner.selectedItem.toString(),max.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
             Log.d(TAG,"shop edit:" + newshop.toString())
