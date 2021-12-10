@@ -63,6 +63,14 @@ interface Api {
     @POST("delete-shop")
     suspend fun deleteShop(@Body shop: Shop)
             : Response<Boolean>
+
+
+
+    // TODO
+    // editshop api 짜줘..
+
+    // TODO
+    // getStatistic api 짜줘...
 }
 
 object RetrofitInstance {
