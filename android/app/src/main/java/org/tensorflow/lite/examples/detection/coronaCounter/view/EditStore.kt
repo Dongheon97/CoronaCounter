@@ -1,13 +1,19 @@
 package org.tensorflow.lite.examples.detection.coronaCounter.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import com.example.coronacounter.model.BusinessType
 import com.example.coronacounter.model.Shop
 import com.example.coronacounter.viewModel.AppViewModel
+import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.detection.R
 import org.tensorflow.lite.examples.detection.databinding.FragmentEditStoreBinding
 import org.tensorflow.lite.examples.detection.databinding.FragmentMainMenuBinding
@@ -27,6 +33,7 @@ class EditStore : Fragment() {
     private var _binding: FragmentEditStoreBinding? = null
     private val binding get() = _binding!!
     private lateinit var shop: Shop
+    private lateinit var deleteButton: Button
 
     private val sharedViewModel: AppViewModel by activityViewModels()
 
@@ -49,6 +56,24 @@ class EditStore : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.shopName.text = shop.shopName
+        deleteButton = binding.deleteButton
+        deleteButton.setOnClickListener {
+
+            // val shop = sharedViewModel.shop.value!!
+            Log.d(TAG,"shop delete" + shop.toString())
+            lifecycleScope.launch{
+                val succeed = sharedViewModel.deleteShop(shop)
+                if (succeed){
+                    sharedViewModel.fetchShops()
+                    val action = EditStoreDirections.actionEditStoreToMyPage()
+                    view.findNavController().navigate(action)
+                    Log.d(TAG,"${shop.toString()} deleted")
+                }else{
+                    Log.d(TAG,"delete failed ${shop.toString()}")
+                }
+            }
+
+        }
     }
     companion object {
         /**

@@ -47,13 +47,21 @@ interface Api {
             : Response<Boolean>
 
 
-    //TODO
     //Shop을 건네주면
     //db에 저장하고
     //성공했는지를 boolean으로 받고 싶음
     @Headers("Content-Type:application/json")
     @POST("add-shop")
     suspend fun addShop(@Body shop: Shop)
+            : Response<Boolean>
+
+
+    //Shop을 건네주면
+    //db에 저장하고
+    //성공했는지를 boolean으로 받고 싶음
+    @Headers("Content-Type:application/json")
+    @POST("delete-shop")
+    suspend fun deleteShop(@Body shop: Shop)
             : Response<Boolean>
 }
 
