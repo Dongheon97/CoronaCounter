@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.example.coronacounter.model.Authenticator
 import com.example.coronacounter.model.Shop
 import com.example.coronacounter.model.User
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.tensorflow.lite.examples.detection.coronaCounter.api.Api
@@ -30,6 +32,16 @@ class AppViewModel:ViewModel(){
 
     private val _mainStage = MutableLiveData<Int>()
     val mainStage: LiveData<Int> get() = _mainStage
+
+    private val _stats = MutableLiveData<List<Trial>>()
+    val stats: LiveData<List<Trial>> get() = _stats
+    val statsEntry:List<BarEntry> get() {
+        val entries = mutableListOf<BarEntry>()
+        for (trial in stats.value!!){
+            entries.add(BarEntry(trial.tid.toFloat(),trial.tnum.toFloat()))
+        }
+        return entries
+    }
 
 
     val limitPeople: Int get() = _mainShop.value!!.limitPeople(_mainStage.value!!)
@@ -97,16 +109,17 @@ class AppViewModel:ViewModel(){
     }
 
     //통계를 받아오는 함수
-    suspend fun getStatistic(shop: Shop) : List<Trial> {
+    suspend fun getStatistic(shop: Shop)  {
         Log.d(TAG,"give me statistic"+shop.toString())
         return withContext(Dispatchers.IO) {
             val DBAccess = Api.getStatistic(shop)
             if (DBAccess.isSuccessful){ // http code
                 Log.d(TAG,DBAccess.body()!!.toString())
-                DBAccess.body()!!
+                _stats.postValue(DBAccess.body()!!)
+
             } else{
                 Log.d(TAG,"dbaccessfailed")
-                listOf<Trial>()// network error
+                // listOf<Trial>()
             }
         }
     }

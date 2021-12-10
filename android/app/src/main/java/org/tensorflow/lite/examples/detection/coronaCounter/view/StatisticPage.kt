@@ -1,6 +1,7 @@
 package org.tensorflow.lite.examples.detection.coronaCounter.view
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.coronacounter.viewModel.AppViewModel
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.detection.R
 import org.tensorflow.lite.examples.detection.databinding.FragmentMyPageBinding
@@ -30,7 +38,7 @@ class StatisticPage : Fragment() {
     private var _binding: FragmentStatisticPageBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: AppViewModel by activityViewModels()
-
+    private lateinit var chart: BarChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +58,20 @@ class StatisticPage : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        chart = binding.chart
+        val entries = sharedViewModel.statsEntry
+        val barDataSet = BarDataSet(entries, "출입 인원 수");
+
+        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS.toList())
+        barDataSet.setValueTextColor(Color.BLACK)
+        barDataSet.valueTextSize = 16f
+
+        val barData = BarData(barDataSet);
+
+        chart.setFitBars(true)
+        chart.setData(barData);
+        chart.description.text = "출입 인원 변화 수"
+        chart.animateY(1000)
     }
 
     override fun onDestroyView() {

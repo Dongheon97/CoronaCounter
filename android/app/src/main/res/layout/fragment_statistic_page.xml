@@ -6,9 +6,9 @@
     tools:context=".coronaCounter.view.StatisticPage">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="웰컴 통계" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
