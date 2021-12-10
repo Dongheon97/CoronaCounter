@@ -96,7 +96,7 @@ class AppViewModel:ViewModel(){
         }
     }
 
-    //샵 리스트를 업데이트 하는 함수
+    //통계를 받아오는 함수
     suspend fun getStatistic(shop: Shop) : List<Trial> {
         Log.d(TAG,"give me statistic"+shop.toString())
         return withContext(Dispatchers.IO) {
