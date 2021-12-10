@@ -28,14 +28,15 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.util.TypedValue;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.BorderedText;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.ImageUtils;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.Logger;
 import org.tensorflow.lite.examples.detection.tflite.Detector.Recognition;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 
 /** A tracker that handles non-max suppression and matches existing objects to new detections. */
@@ -124,12 +125,13 @@ public class MultiBoxTracker {
     return frameToCanvasMatrix;
   }
 
-  public synchronized void draw(final Canvas canvas) {
+  public synchronized int draw(final Canvas canvas) {
     final boolean rotated = sensorOrientation % 180 == 90;
     final float multiplier =
             Math.min(
                     canvas.getHeight() / (float) (rotated ? frameWidth : frameHeight),
                     canvas.getWidth() / (float) (rotated ? frameHeight : frameWidth));
+    int detectedPos = 0;
     frameToCanvasMatrix =
             ImageUtils.getTransformationMatrix(
                     frameWidth,
@@ -140,7 +142,7 @@ public class MultiBoxTracker {
                     false);
     for (final TrackedRecognition recognition : trackedObjects) {
       // modified "people"
-      if(recognition.title.equals("cell phone") && recognition.detectionConfidence > 0.6){
+      if(recognition.title.equals("person") && recognition.detectionConfidence > 0.6){
         final RectF trackedPos = new RectF(recognition.location);
 
         getFrameToCanvasMatrix().mapRect(trackedPos);
@@ -154,12 +156,15 @@ public class MultiBoxTracker {
                         ? String.format("%s %.2f", recognition.title, (100 * recognition.detectionConfidence))
                         : String.format("%.2f", (100 * recognition.detectionConfidence));
         //borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top, labelString);
-        final Pair<Float, Float> pair = new Pair<>(trackedPos.centerX(), trackedPos.centerY());
+        //final Pair<Float, Float> pair = new Pair<>(trackedPos.centerX(), trackedPos.centerY());
+        detectedPos = (int)trackedPos.centerX();
         borderedText.drawText(
+                //canvas, trackedPos.left + cornerSize, trackedPos.top, labelString+"%", boxPaint
                 canvas, trackedPos.left + cornerSize, trackedPos.top, "CenterX: " + trackedPos.centerX(), boxPaint
         );
       }
     }
+    return detectedPos;
   }
 
   private void processResults(final List<Recognition> results) {

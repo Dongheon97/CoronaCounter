@@ -8,14 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.coronacounter.model.Shop
-import org.tensorflow.lite.examples.detection.databinding.FragmentLoginPageBinding
 import org.tensorflow.lite.examples.detection.databinding.FragmentMainMenuBinding
-import com.example.coronacounter.model.User
 import com.example.coronacounter.viewModel.AppViewModel
 import kotlinx.coroutines.launch
 import org.tensorflow.lite.examples.detection.imageProcessor.IPActivity

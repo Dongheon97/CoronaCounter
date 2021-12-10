@@ -35,20 +35,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/frame"
+            android:id="@+id/max_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Frame"
+            android:text="Maximum"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/frame_info"
+            android:id="@+id/showMaximum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="right"
-            android:text="640*480"
+            android:text="10"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
@@ -58,20 +58,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/crop"
+            android:id="@+id/current_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Crop"
+            android:text="Current"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/crop_info"
+            android:id="@+id/showCurrent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="right"
-            android:text="640*480"
+            android:text="0"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
@@ -83,20 +83,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/inference"
+            android:id="@+id/limit_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Inference Time"
+            android:text="Limit"
             android:textColor="@android:color/black" />
 
         <TextView
-            android:id="@+id/inference_info"
+            android:id="@+id/showLimit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="right"
-            android:text="640*480"
+            android:text="10"
             android:textColor="@android:color/black" />
     </LinearLayout>
 

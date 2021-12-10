@@ -34,19 +34,19 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.tensorflow.lite.examples.detection.R;
 import org.tensorflow.lite.examples.detection.imageProcessor.customview.OverlayView;
 import org.tensorflow.lite.examples.detection.imageProcessor.customview.OverlayView.DrawCallback;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.BorderedText;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.ImageUtils;
 import org.tensorflow.lite.examples.detection.imageProcessor.env.Logger;
+import org.tensorflow.lite.examples.detection.imageProcessor.tracking.MultiBoxTracker;
 import org.tensorflow.lite.examples.detection.tflite.Detector;
 import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIModel;
-import org.tensorflow.lite.examples.detection.imageProcessor.tracking.MultiBoxTracker;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
@@ -81,6 +81,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   private long timestamp = 0;
 
+  private boolean onlyOnce = false;
+  private boolean isEnter = false;
+  private boolean isExit = false;
+  private int testCurrent = 0;
+
   private Matrix frameToCropTransform;
   private Matrix cropToFrameTransform;
 
@@ -88,10 +93,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   private BorderedText borderedText;
 
+  private IPGlobal ipGlobal;
+
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
     setContentView(R.layout.tfe_od_activity_camera);
+    ipGlobal = (IPGlobal) getApplication();
+
   }
 
   @Override
@@ -164,7 +173,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     ++timestamp;
     final long currTimestamp = timestamp;
     trackingOverlay.postInvalidate();
-
     // No mutex needed as this method is not reentrant.
     if (computingDetection) {
       readyForNextImage();
@@ -237,8 +245,93 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                     showInference(lastProcessingTimeMs + "ms");
                   }
                 });
+            int detectedPos = tracker.draw(canvas);
+            int limit = ipGlobal.getLimited();
+            int current = ipGlobal.getCurrent();
+
+            if(ipGlobal.getIsRight()){
+              setRight(detectedPos);
+              countPeople(detectedPos);
+            }
+            else{
+              setLeft(detectedPos);
+              countPeople(detectedPos);
+            }
           }
         });
+  }
+
+  // Pre-set of Left Entrance
+  private void setLeft(int givenPos){
+    if(givenPos < 70 && givenPos >= 1 && this.isExit){
+      this.isEnter = false;
+      this.isExit = false;
+    }
+    else if(givenPos > 180 && this.isEnter){
+      this.isExit = false;
+      this.isEnter = false;
+    }
+    else if(givenPos < 70 && givenPos >= 1){
+      this.isEnter = true;
+      this.isExit = false;
+      this.onlyOnce = false;
+    }
+    else if(givenPos > 180){
+      this.isEnter = false;
+      this.isExit = true;
+      this.onlyOnce = false;
+    }
+  }
+  private void setRight(int givenPos){
+    if(givenPos < 70 && givenPos >= 1 && this.isEnter){
+      this.isEnter = false;
+      this.isExit = false;
+    }
+    else if(givenPos > 180 && this.isExit){
+      this.isExit = false;
+      this.isEnter = false;
+    }
+    else if(givenPos < 70 && givenPos >= 1){
+      this.isEnter = false;
+      this.isExit = true;
+      this.onlyOnce = false;
+    }
+    else if(givenPos > 180){
+      this.isEnter = true;
+      this.isExit = false;
+      this.onlyOnce = false;
+    }
+  }
+
+  // @@@ counting people using detectPos @@@
+  private void countPeople(int givenPos){
+    // Enter
+    if((!this.onlyOnce) &&  this.isEnter){
+      if(givenPos >= 100 && givenPos < 150 ){
+        // Enter shop
+        System.out.println("Enter: ");
+        System.out.println(givenPos);
+        testCurrent+=1;
+        System.out.println(testCurrent);
+        this.onlyOnce = true;
+      }
+    }
+    // Exit
+    else if((!this.onlyOnce) &&  this.isExit ){
+      if(givenPos > 100 && givenPos <= 150){
+        // Exit shop
+        if(testCurrent <= 0){
+          System.out.println("shop is empty");
+        }
+        else {
+          System.out.print("Exit: ");
+          System.out.println(givenPos);
+          //testCurrent-=1;
+          System.out.println(testCurrent);
+          this.onlyOnce = true;
+        }
+      }
+    }
   }
 
   @Override
@@ -257,7 +350,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     TF_OD_API;
   }
 
-  @Override
+  @Override  
   protected void setUseNNAPI(final boolean isChecked) {
     runInBackground(
         () -> {
