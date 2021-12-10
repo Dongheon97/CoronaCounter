@@ -76,8 +76,8 @@ interface Api {
     // getStatistic api 짜줘...
     @Headers("Content-Type:application/json")
     @POST("statistic")
-    suspend fun getStatistic(@Body user: Shop)
-            : List<Trial>
+    suspend fun getStatistic(@Body shop: Shop)
+            : Response<List<Trial>>
 
 }
 

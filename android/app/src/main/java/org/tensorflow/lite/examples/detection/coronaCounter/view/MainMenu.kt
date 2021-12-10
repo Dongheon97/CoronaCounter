@@ -85,9 +85,12 @@ class MainMenu : Fragment() {
 
         toStatisticButton = binding.seeStatisticButton
         toStatisticButton.setOnClickListener {
-            val action = MainMenuDirections.actionMainMenuToStatisticPage()
-            view.findNavController().navigate(action)
-            Log.d(TAG,"to statistic button clicked")
+            lifecycleScope.launch {
+                sharedViewModel.getStatistic(sharedViewModel.mainShop.value!!)
+                val action = MainMenuDirections.actionMainMenuToStatisticPage()
+                view.findNavController().navigate(action)
+                Log.d(TAG,"to statistic button clicked")
+            }
         }
 
 

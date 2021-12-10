@@ -11,6 +11,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.tensorflow.lite.examples.detection.coronaCounter.api.Api
 import org.tensorflow.lite.examples.detection.coronaCounter.api.RetrofitInstance
+import org.tensorflow.lite.examples.detection.coronaCounter.model.Trial
+
 private const val TAG = "AppViewModel"
 
 class AppViewModel:ViewModel(){
@@ -95,6 +97,20 @@ class AppViewModel:ViewModel(){
     }
 
     //샵 리스트를 업데이트 하는 함수
+    suspend fun getStatistic(shop: Shop) : List<Trial> {
+        Log.d(TAG,"give me statistic"+shop.toString())
+        return withContext(Dispatchers.IO) {
+            val DBAccess = Api.getStatistic(shop)
+            if (DBAccess.isSuccessful){ // http code
+                Log.d(TAG,DBAccess.body()!!.toString())
+                DBAccess.body()!!
+            } else{
+                Log.d(TAG,"dbaccessfailed")
+                listOf<Trial>()// network error
+            }
+        }
+    }
+
     suspend fun fetchShops() {
         Log.d(TAG,"fetch shops")
         withContext(Dispatchers.IO) {
