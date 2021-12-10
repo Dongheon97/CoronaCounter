@@ -42,6 +42,7 @@ class EditStore : Fragment() {
     private lateinit var businessTypeSpinner : Spinner
     private lateinit var locationSpinner : Spinner
     private lateinit var editButton: Button
+    private lateinit var backButton: Button
     private val sharedViewModel: AppViewModel by activityViewModels()
 
     // TODO: Rename and change types of parameters
@@ -74,6 +75,10 @@ class EditStore : Fragment() {
         }
             return 0;
         }
+        backButton = binding.backButton
+        backButton.setOnClickListener {
+            val action = EditStoreDirections.actionEditStoreToMyPage()
+            view.findNavController().navigate(action)}
         editButton = binding.editButton
         max = binding.maxEdit
         name = binding.nameEdit
@@ -145,7 +150,7 @@ class EditStore : Fragment() {
             val newshop = Shop(shop.onum as? Integer,shop.sid, name.text.toString(),locationSpinner.selectedItem.toString(),max.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
             Log.d(TAG,"shop edit:" + newshop.toString())
             lifecycleScope.launch{
-                val succeed = sharedViewModel.editShop(mapOf<String,Shop>(shop.sid!! to shop))
+                val succeed = sharedViewModel.editShop(mapOf<String,Shop>(shop.sid!! to newshop))
                 if (succeed){
                     sharedViewModel.fetchShops()
                     if (isMain){
@@ -163,7 +168,7 @@ class EditStore : Fragment() {
 
                 }else{
                     Toast.makeText(getActivity(), "상가 변경 실패", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,"edit failed ${shop.toString()}")
+                    Log.d(TAG,"edit failed ${newshop.toString()}")
                 }
             }
 
