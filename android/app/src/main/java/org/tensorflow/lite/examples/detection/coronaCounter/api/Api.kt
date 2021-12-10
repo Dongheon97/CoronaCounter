@@ -68,6 +68,10 @@ interface Api {
 
     // TODO
     // editshop api 짜줘..
+    @Headers("Content-Type:application/json")
+    @POST("edit-shop")
+    suspend fun editShop(@Body shopPair: Map<String,Shop>)
+            : Response<Boolean>
 
     // TODO
     // getStatistic api 짜줘...

@@ -150,4 +150,18 @@ class AppViewModel:ViewModel(){
             }
         }
     }
+
+    // sid와 shop을 보내면, db에서 업데이트해준 후 성공여부를 리턴
+    suspend fun editShop(shopPair:Map<String,Shop>) : Boolean {
+        return withContext(Dispatchers.IO){
+            val DBAccess = Api.editShop(shopPair)
+            if (DBAccess.isSuccessful){ // http code
+                val didSucceed = DBAccess.body()!!
+                didSucceed
+            } else{     // network error
+                Log.d(TAG,"edit shop network error")
+                false
+            }
+        }
+    }
 }

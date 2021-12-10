@@ -1,13 +1,13 @@
 package org.tensorflow.lite.examples.detection.coronaCounter.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -33,9 +33,15 @@ private const val TAG = "EditStore"
 class EditStore : Fragment() {
     private var _binding: FragmentEditStoreBinding? = null
     private val binding get() = _binding!!
+    private var _context : Context? = null
+    private val mycontext get() = _context!!
     private lateinit var shop: Shop
     private lateinit var deleteButton: Button
-
+    private lateinit var name:TextView
+    private lateinit var max:TextView
+    private lateinit var businessTypeSpinner : Spinner
+    private lateinit var locationSpinner : Spinner
+    private lateinit var editButton: Button
     private val sharedViewModel: AppViewModel by activityViewModels()
 
     // TODO: Rename and change types of parameters
@@ -50,12 +56,31 @@ class EditStore : Fragment() {
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentEditStoreBinding.inflate(inflater, container, false)
         val view = binding.root
+        _context = container?.context
         shop = arguments?.getSerializable("shop") as Shop
         // Inflate the layout for this fragment
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        //private method of your class
+        fun getIndex(spinner:Spinner, myString:String):Int{
+            for (i:Int in 0..spinner.count){
+            if (spinner.getItemAtPosition(i).toString().equals(myString)){
+                return i;
+            }
+        }
+            return 0;
+        }
+        editButton = binding.editButton
+        max = binding.maxEdit
+        name = binding.nameEdit
+        max.setText(shop.maximumPeople.toString());
+
+        name.setText(shop.shopName);
+
         binding.shopName.text = shop.shopName
         deleteButton = binding.deleteButton
         deleteButton.setOnClickListener {
@@ -83,6 +108,68 @@ class EditStore : Fragment() {
             }
 
         }
+
+
+
+
+        businessTypeSpinner = binding.businessTypeSpinnerEdit
+        ArrayAdapter.createFromResource(
+            mycontext,
+            R.array.business_type_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            businessTypeSpinner.adapter = adapter
+        }
+        businessTypeSpinner.setSelection(getIndex(businessTypeSpinner, shop.businessType.toString()));
+
+
+        locationSpinner = binding.locationSpinnerEdit
+        ArrayAdapter.createFromResource(
+            mycontext,
+            R.array.location_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            locationSpinner.adapter = adapter
+        }
+        locationSpinner.setSelection(getIndex(locationSpinner, shop.location.toString()));
+
+
+        editButton.setOnClickListener {
+            val isMain = shop.equals(sharedViewModel.mainShop.value)
+            val newshop = Shop(shop.onum as? Integer,shop.sid, name.text.toString(),locationSpinner.selectedItem.toString(),max.text.toString().toInt() as? Integer,BusinessType.valueOf(businessTypeSpinner.selectedItem.toString()))
+            Log.d(TAG,"shop edit:" + newshop.toString())
+            lifecycleScope.launch{
+                val succeed = sharedViewModel.editShop(mapOf<String,Shop>(shop.sid!! to shop))
+                if (succeed){
+                    sharedViewModel.fetchShops()
+                    if (isMain){
+                        val action = EditStoreDirections.actionEditStoreToSelectPrimaryShop()
+                        Toast.makeText(getActivity(), "메인 상가를 변경하셨으므로 다시 선택해 주십시오", Toast.LENGTH_SHORT).show();
+                        view.findNavController().navigate(action)
+                        Log.d(TAG,"${newshop.toString()} edited")
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "상가 편집 성공", Toast.LENGTH_SHORT).show();
+                        val action = EditStoreDirections.actionEditStoreToMyPage()
+                        view.findNavController().navigate(action)
+                        Log.d(TAG,"${newshop.toString()} edited")
+                    }
+
+                }else{
+                    Toast.makeText(getActivity(), "상가 변경 실패", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"edit failed ${shop.toString()}")
+                }
+            }
+
+        }
+
+
     }
     companion object {
         /**
