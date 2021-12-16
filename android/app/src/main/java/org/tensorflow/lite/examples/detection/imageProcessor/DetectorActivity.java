@@ -236,16 +236,15 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 new Runnable() {
                   @Override
                   public void run() {
-//                    System.out.println((String.valueOf(ipGlobal.getMaximum())));
+
                     showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
-//                    System.out.println("ShowFrameINfo@@@@@@@@@@@@@@");
+
                     showCropInfo(String.valueOf(testCurrent));
                     showInference((String.valueOf(ipGlobal.getLimited())));
                   }
                 });
             int detectedPos = tracker.draw(canvas);
             int limit = ipGlobal.getLimited();
-            int current = ipGlobal.getCurrent();
 
             if(ipGlobal.getIsRight()){
               setRight(detectedPos);
@@ -309,7 +308,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         // Enter shop
         System.out.println("Enter: ");
         System.out.println(givenPos);
-        testCurrent+=1;
+        if((testCurrent+1) >= ipGlobal.getLimited()){
+          System.out.println("Over Limit People");
+        }
+        testCurrent += 1;
         System.out.println(testCurrent);
         this.onlyOnce = true;
       }
@@ -324,7 +326,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         else {
           System.out.print("Exit: ");
           System.out.println(givenPos);
-          //testCurrent-=1;
+          testCurrent-=1;
           System.out.println(testCurrent);
           this.onlyOnce = true;
         }

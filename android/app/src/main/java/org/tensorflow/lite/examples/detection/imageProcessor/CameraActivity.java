@@ -547,8 +547,6 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   protected void showFrameInfo(String frameInfo) {
-    System.out.println(maxValueTextView.getText());
-
     maxValueTextView.setText(frameInfo);
 
   }

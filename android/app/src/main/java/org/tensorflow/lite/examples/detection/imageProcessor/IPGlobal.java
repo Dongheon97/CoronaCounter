@@ -6,7 +6,7 @@ public class IPGlobal extends Application {
     private boolean isBack;
     private boolean isRight;
     private int maximum;
-    private int current;
+//    private int current;
     private int limited;
 
     public boolean getIsBack(){
@@ -30,12 +30,12 @@ public class IPGlobal extends Application {
         this.maximum = givenMax;
     }
 
-    public int getCurrent(){
-        return this.current;
-    }
-    public void setCurrent(int givenCounted){
-        this.current = givenCounted;
-    }
+//    public int getCurrent(){
+//        return this.current;
+//    }
+//    public void setCurrent(int givenCounted){
+//        this.current = givenCounted;
+//    }
 
     public int getLimited(){
         return this.limited;
