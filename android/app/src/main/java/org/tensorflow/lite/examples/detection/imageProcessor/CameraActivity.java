@@ -169,8 +169,8 @@ public abstract class CameraActivity extends AppCompatActivity
 
 
     maxValueTextView = findViewById(R.id.showMaximum);
-    currentValueTextView = findViewById(R.id.current_info);
-    limitValueTextView = findViewById(R.id.limit_info);
+    currentValueTextView = findViewById(R.id.showCurrent);
+    limitValueTextView = findViewById(R.id.showLimit);
 
     apiSwitchCompat.setOnCheckedChangeListener(this);
 

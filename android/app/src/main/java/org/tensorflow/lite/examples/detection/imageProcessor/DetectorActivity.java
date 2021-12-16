@@ -95,18 +95,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   private IPGlobal ipGlobal;
 
-  @Override
-  protected void onCreate(@Nullable Bundle savedInstanceState){
-    super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.tfe_od_activity_camera);
-    ipGlobal = (IPGlobal) getApplication();
-
-    showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
-  }
 
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
+    ipGlobal = (IPGlobal) getApplication();
     final float textSizePx =
         TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, getResources().getDisplayMetrics());
@@ -245,8 +238,8 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 //                    System.out.println((String.valueOf(ipGlobal.getMaximum())));
                     showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
 //                    System.out.println("ShowFrameINfo@@@@@@@@@@@@@@");
-                    showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
-                    showInference(lastProcessingTimeMs + "ms");
+                    showCropInfo("current");
+                    showInference((String.valueOf(ipGlobal.getLimited())));
                   }
                 });
             int detectedPos = tracker.draw(canvas);
