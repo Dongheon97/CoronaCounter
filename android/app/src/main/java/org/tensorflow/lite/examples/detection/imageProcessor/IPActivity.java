@@ -28,7 +28,6 @@ public class IPActivity extends AppCompatActivity {
         ipGlobal = (IPGlobal) getApplication();
         ipGlobal.setMaximum(getMax);
         ipGlobal.setLimited(getLimit);
-        ipGlobal.setCurrent(0);
 
         setContentView(R.layout.tfe_od_choose_camera);
 
@@ -71,7 +70,6 @@ public class IPActivity extends AppCompatActivity {
 //                ipGlobal.setCurrent(0);
                 System.out.println(ipGlobal.getMaximum());
                 System.out.println(ipGlobal.getLimited());
-                System.out.println(ipGlobal.getCurrent());
                 Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);
                 startActivity(intent);
             }
