@@ -1,5 +1,6 @@
 package com.example.coronacounter.view
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.example.coronacounter.model.Shop
 import org.tensorflow.lite.examples.detection.databinding.FragmentMainMenuBinding
 import com.example.coronacounter.viewModel.AppViewModel
 import kotlinx.coroutines.launch
+import org.tensorflow.lite.examples.detection.coronaCounter.model.Trial
 import org.tensorflow.lite.examples.detection.imageProcessor.IPActivity
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +52,19 @@ class MainMenu : Fragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                val current = data?.getIntExtra("current",0)
+                lifecycleScope.launch{
+                    val trial = Trial(0,current!!,primaryShop.sid!!.toInt())
+                    sharedViewModel.AddCountInfo(trial)
+                    Log.d(TAG,"trial is "+ trial)
+                }
+            }
+        }
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = FragmentMainMenuBinding.inflate(inflater, container, false)
@@ -73,7 +88,7 @@ class MainMenu : Fragment() {
             val intent = Intent(getActivity(), IPActivity::class.java)
             intent.putExtra("max", sharedViewModel.mainShop.value!!.maximumPeople?.toInt())
             intent.putExtra("limit", sharedViewModel.limitPeople)
-            startActivity(intent)
+            startActivityForResult(intent, 1)
             Log.d(TAG, "to checkPeople button clicked")
         }
 

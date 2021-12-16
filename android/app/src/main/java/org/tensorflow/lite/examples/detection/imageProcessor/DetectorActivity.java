@@ -16,6 +16,7 @@
 
 package org.tensorflow.lite.examples.detection.imageProcessor;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -96,7 +97,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
   private IPGlobal ipGlobal;
 
-
+  @Override
+  public void onBackPressed() {
+    Intent intent = new Intent();
+    intent.putExtra("current", testCurrent);
+    setResult(RESULT_OK, intent);
+    finish();
+  }
 
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {

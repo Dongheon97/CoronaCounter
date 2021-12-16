@@ -15,6 +15,31 @@ public class IPActivity extends AppCompatActivity {
     private IPGlobal ipGlobal;
     private int getMax;
     private int getLimit;
+    private int current = 0 ;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                current = data.getIntExtra("current",0);
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("current", current);
+        if (current!= 0){
+            setResult(RESULT_OK, intent);
+        }
+        else{
+            setResult(RESULT_CANCELED, intent);
+        }
+        finish();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -71,8 +96,9 @@ public class IPActivity extends AppCompatActivity {
                 System.out.println(ipGlobal.getMaximum());
                 System.out.println(ipGlobal.getLimited());
                 Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
+
     }
 }

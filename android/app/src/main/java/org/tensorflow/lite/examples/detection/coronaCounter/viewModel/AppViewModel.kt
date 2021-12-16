@@ -50,7 +50,17 @@ class AppViewModel:ViewModel(){
 
     private val Api = RetrofitInstance.instance.create(Api::class.java)
 
-
+    suspend fun AddCountInfo(trial: Trial) : Boolean {
+        return withContext(Dispatchers.IO){
+            val DBAccess = Api.addCountNumber(trial)
+            if (DBAccess.isSuccessful){
+                val returnValue = DBAccess.body()!!
+                returnValue
+            }else{
+                false
+            }
+        }
+    }
     // 유저를 세팅하고, 결과를 알려주는 함수
     suspend fun signin(user: User): Boolean {
         return withContext(Dispatchers.IO){

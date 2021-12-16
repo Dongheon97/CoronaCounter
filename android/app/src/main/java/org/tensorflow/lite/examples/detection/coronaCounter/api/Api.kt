@@ -79,6 +79,12 @@ interface Api {
     suspend fun getStatistic(@Body shop: Shop)
             : Response<List<Trial>>
 
+    @Headers("Content-Type:application/json")
+    @POST("addCountInfo")
+    suspend fun addCountNumber(@Body trial: Trial)
+            : Response<Boolean>
+
+
 }
 
 object RetrofitInstance {
