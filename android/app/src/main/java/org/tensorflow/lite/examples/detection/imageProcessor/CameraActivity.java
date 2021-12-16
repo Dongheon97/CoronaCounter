@@ -91,10 +91,11 @@ public abstract class CameraActivity extends AppCompatActivity
   private SwitchCompat apiSwitchCompat;
   private TextView threadsTextView;
 
-  private IPGlobal ipGlobal = (IPGlobal) getApplication();
+  private IPGlobal ipGlobal;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
+    ipGlobal = (IPGlobal) getApplication();
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -167,7 +168,7 @@ public abstract class CameraActivity extends AppCompatActivity
         });
 
 
-    maxValueTextView = findViewById(R.id.max_info);
+    maxValueTextView = findViewById(R.id.showMaximum);
     currentValueTextView = findViewById(R.id.current_info);
     limitValueTextView = findViewById(R.id.limit_info);
 
@@ -546,7 +547,10 @@ public abstract class CameraActivity extends AppCompatActivity
   }
 
   protected void showFrameInfo(String frameInfo) {
+    System.out.println(maxValueTextView.getText());
+
     maxValueTextView.setText(frameInfo);
+
   }
 
   protected void showCropInfo(String cropInfo) {

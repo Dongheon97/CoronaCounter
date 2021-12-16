@@ -12,12 +12,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.tensorflow.lite.examples.detection.R;
 
 public class IPActivity extends AppCompatActivity {
-    private IPGlobal ipGlobal = (IPGlobal) getApplication();
+    private IPGlobal ipGlobal;
+    private int getMax;
+    private int getLimit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        getMax = intent.getIntExtra("max", 0);
+        getLimit = intent.getIntExtra("limit", 0);
+
         // 전역변수 가져옴.
-        IPGlobal ipGlobal = (IPGlobal) getApplication() ;
+        ipGlobal = (IPGlobal) getApplication();
+        ipGlobal.setMaximum(getMax);
+        ipGlobal.setLimited(getLimit);
+        ipGlobal.setCurrent(0);
 
         setContentView(R.layout.tfe_od_choose_camera);
 
@@ -55,9 +66,9 @@ public class IPActivity extends AppCompatActivity {
         countButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                ipGlobal.setMaximum(10);
-                ipGlobal.setLimited(4);
-                ipGlobal.setCurrent(0);
+//                ipGlobal.setMaximum(10);
+//                ipGlobal.setLimited(4);
+//                ipGlobal.setCurrent(0);
                 System.out.println(ipGlobal.getMaximum());
                 System.out.println(ipGlobal.getLimited());
                 System.out.println(ipGlobal.getCurrent());

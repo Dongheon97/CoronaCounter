@@ -98,9 +98,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
+
     setContentView(R.layout.tfe_od_activity_camera);
     ipGlobal = (IPGlobal) getApplication();
 
+    showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
   }
 
   @Override
@@ -240,7 +242,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 new Runnable() {
                   @Override
                   public void run() {
-                    showFrameInfo(previewWidth + "x" + previewHeight);
+//                    System.out.println((String.valueOf(ipGlobal.getMaximum())));
+                    showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
+//                    System.out.println("ShowFrameINfo@@@@@@@@@@@@@@");
                     showCropInfo(cropCopyBitmap.getWidth() + "x" + cropCopyBitmap.getHeight());
                     showInference(lastProcessingTimeMs + "ms");
                   }

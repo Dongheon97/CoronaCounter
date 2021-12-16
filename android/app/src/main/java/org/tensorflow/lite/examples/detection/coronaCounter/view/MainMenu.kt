@@ -71,6 +71,8 @@ class MainMenu : Fragment() {
         toCheckPeopleButton = binding.checkPeopleButton
         toCheckPeopleButton.setOnClickListener {
             val intent = Intent(getActivity(), IPActivity::class.java)
+            intent.putExtra("max", sharedViewModel.mainShop.value!!.maximumPeople?.toInt())
+            intent.putExtra("limit", sharedViewModel.limitPeople)
             startActivity(intent)
             Log.d(TAG, "to checkPeople button clicked")
         }
