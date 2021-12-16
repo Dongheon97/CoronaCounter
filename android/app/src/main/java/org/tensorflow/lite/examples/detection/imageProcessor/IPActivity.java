@@ -90,9 +90,6 @@ public class IPActivity extends AppCompatActivity {
         countButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-//                ipGlobal.setMaximum(10);
-//                ipGlobal.setLimited(4);
-//                ipGlobal.setCurrent(0);
                 System.out.println(ipGlobal.getMaximum());
                 System.out.println(ipGlobal.getLimited());
                 Intent intent = new Intent(getApplicationContext(), DetectorActivity.class);

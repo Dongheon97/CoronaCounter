@@ -27,6 +27,9 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Size;
@@ -86,7 +89,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private boolean onlyOnce = false;
   private boolean isEnter = false;
   private boolean isExit = false;
-  private int testCurrent = 0;
+  private int testCurrent = 4;
 
   private Matrix frameToCropTransform;
   private Matrix cropToFrameTransform;
@@ -315,8 +318,11 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         // Enter shop
         System.out.println("Enter: ");
         System.out.println(givenPos);
-        if((testCurrent+1) >= ipGlobal.getLimited()){
+        if((testCurrent+1) > ipGlobal.getLimited()){
           System.out.println("Over Limit People");
+          Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+          Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+          ringtone.play();
         }
         testCurrent += 1;
         System.out.println(testCurrent);
@@ -339,6 +345,12 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         }
       }
     }
+  }
+
+  private void ringAlarm(){
+    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    Ringtone ringtone = RingtoneManager.getRingtone(getApplicationContext(), notification);
+    ringtone.play();
   }
 
   @Override
