@@ -46,6 +46,7 @@ import org.tensorflow.lite.examples.detection.tflite.TFLiteObjectDetectionAPIMod
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -238,7 +239,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 //                    System.out.println((String.valueOf(ipGlobal.getMaximum())));
                     showFrameInfo((String.valueOf(ipGlobal.getMaximum())));
 //                    System.out.println("ShowFrameINfo@@@@@@@@@@@@@@");
-                    showCropInfo("current");
+                    showCropInfo(String.valueOf(testCurrent));
                     showInference((String.valueOf(ipGlobal.getLimited())));
                   }
                 });
