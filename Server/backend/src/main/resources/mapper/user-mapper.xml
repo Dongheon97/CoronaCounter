@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.SE.backend.repository.ShowMapper">
+    <select id="getCityList" resultType="com.SE.backend.domain.Region">
+        SELECT * FROM region
+    </select>
+    <select id="getUserList" resultType="com.SE.backend.domain.DBUser">
+        SELECT * FROM owner
+    </select>
+    <select id="getLogin" resultType="com.SE.backend.domain.DBUser">
+        SELECT * FROM owner WHERE id = #{id}
+    </select>
+    <select id="getDistanceStage" resultType="Integer">
+        SELECT stage FROM region WHERE rname = #{rname}
+    </select>
+    <select id="getShopList" resultType="com.SE.backend.domain.Shop">
+        SELECT shop.*, region.rname as rname, businessType.bname as businessType FROM shop, region, businessType WHERE onum =
+        (SELECT onum FROM owner WHERE id = #{id}) AND region.rid = shop.rid AND businessType.bid = shop.bid;
+    </select>
+    <select id="getIdValid"  resultType="com.SE.backend.domain.DBUser">
+        SELECT * FROM owner WHERE id = #{id}
+    </select>
+    <select id="AddUser"  >
+        INSERT into owner (id,pw,oname) values (#{id},#{pw},#{oname})
+    </select>
+    <select id="AddShop"  >
+        INSERT into shop (bid,sname,rid,maxPeople,onum) values
+        (#{BNP},#{shop.sname},
+         (SELECT rid FROM region WHERE rname = #{shop.rname}),
+         #{shop.maxPeople},
+         #{shop.onum})
+    </select>
+    <select id="DeleteShop"  >
+        DELETE FROM shop WHERE sname = #{sname}
+    </select>
+    <select id="EditShop"  >
+        UPDATE shop SET bid = #{BNP}, sname=#{shop.sname},
+        rid = (SELECT rid FROM region WHERE rname = #{shop.rname}),
+        maxPeople = #{shop.maxPeople}
+        WHERE onum = #{shop.onum} and sid = #{oldSid}
+    </select>
+    <select id="getStatistic"  resultType="com.SE.backend.domain.Trial">
+        SELECT * FROM trial WHERE sid = #{sid}
+    </select>
+    <select id="AddCountNumber"  resultType="com.SE.backend.domain.Trial">
+        INSERT INTO trial (tnum,sid) values(#{trial.tnum} , #{trial.sid})
+    </select>
+
+
+</mapper>
